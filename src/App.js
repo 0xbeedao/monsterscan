@@ -41,8 +41,14 @@ async function getUsedTokenIDs (contract) {
     all.push(...ids);
     console.log(`all now ${all.length}`);
     qry = pageOfIDsQuery(skip, contract, 1000);
-    page = await client.query(qry);
-    ids = getPageOfIDs(page);
+    try {
+      page = await client.query(qry);
+      ids = getPageOfIDs(page);
+    }
+    catch (err) {
+      console.error(err);
+      ids = [];
+    }
     skip += 1000;
   }
   return all;
